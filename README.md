@@ -1,2 +1,800 @@
-# ContactManager
-this is just a small poject
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📇 مدیر مخاطبین</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Vazirmatn", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #f5e6f0 0%,
+          #e8d5f5 50%,
+          #d5e8f5 100%
+        );
+        min-height: 100vh;
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #a78bfa, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 15px;
+        font-family: "Vazirmatn", sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #4a4a6a;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+        color: white;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+      }
+
+      .btn-pink {
+        background: linear-gradient(135deg, #f9a8d4, #ec4899);
+        color: white;
+        box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+      }
+
+      .btn-pink:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+      }
+
+      .btn-green {
+        background: linear-gradient(135deg, #6ee7b7, #34d399);
+        color: white;
+        box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
+      }
+
+      .btn-green:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #fca5a5, #ef4444);
+        color: white;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+      }
+
+      .btn-outline {
+        background: rgba(255, 255, 255, 0.5);
+        border: 2px solid rgba(139, 92, 246, 0.2);
+      }
+
+      .btn-outline:hover {
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .search-section {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        flex: 1;
+        position: relative;
+        min-width: 200px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 12px 20px 12px 45px;
+        border: 2px solid rgba(139, 92, 246, 0.2);
+        border-radius: 15px;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: #a78bfa;
+        box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.1);
+      }
+
+      .search-box i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a78bfa;
+      }
+
+      .contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .contact-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease;
+      }
+
+      .contact-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #a78bfa, #ec4899, #6ee7b7);
+      }
+
+      .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+      }
+
+      .contact-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a78bfa, #ec4899);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+      }
+
+      .contact-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #4a4a6a;
+        margin-bottom: 5px;
+      }
+
+      .contact-detail {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #6b6b8a;
+        margin: 5px 0;
+        padding: 5px 0;
+      }
+
+      .contact-detail i {
+        width: 20px;
+        color: #a78bfa;
+      }
+
+      .contact-group {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: linear-gradient(135deg, #d5f5e0, #a7f3d0);
+        color: #065f46;
+        margin-top: 10px;
+      }
+
+      .contact-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+        justify-content: flex-end;
+      }
+
+      .contact-actions button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-edit {
+        background: rgba(167, 139, 250, 0.2);
+        color: #7c3aed;
+      }
+
+      .btn-edit:hover {
+        background: rgba(167, 139, 250, 0.4);
+      }
+
+      .btn-delete {
+        background: rgba(239, 68, 68, 0.2);
+        color: #dc2626;
+      }
+
+      .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.4);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 30px;
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+      }
+
+      .modal-content h2 {
+        margin-bottom: 20px;
+        color: #4a4a6a;
+      }
+
+      .modal-content input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid rgba(139, 92, 246, 0.2);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        font-family: "Vazirmatn", sans-serif;
+        transition: all 0.3s ease;
+      }
+
+      .modal-content input:focus {
+        outline: none;
+        border-color: #a78bfa;
+        box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.1);
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .modal-actions button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        font-family: "Vazirmatn", sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4a4a6a;
+      }
+
+      .stat-label {
+        font-size: 13px;
+        color: #6b6b8a;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+
+        .header h1 {
+          font-size: 22px;
+        }
+
+        .contacts-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+          padding: 25px;
+        }
+      }
+
+      body.dark-mode {
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      }
+
+      body.dark-mode .container {
+        background: rgba(26, 26, 46, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      body.dark-mode .contact-card {
+        background: rgba(26, 26, 46, 0.9);
+        border-color: rgba(255, 255, 255, 0.05);
+      }
+
+      body.dark-mode .contact-name {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .contact-detail {
+        color: #a0a0c0;
+      }
+
+      body.dark-mode .search-box input {
+        background: rgba(26, 26, 46, 0.8);
+        color: white;
+        border-color: rgba(167, 139, 250, 0.3);
+      }
+
+      body.dark-mode .modal-content {
+        background: #1a1a2e;
+        color: white;
+      }
+
+      body.dark-mode .modal-content h2 {
+        color: white;
+      }
+
+      body.dark-mode .modal-content input {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: rgba(167, 139, 250, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1><i class="fas fa-address-book"></i> مدیر مخاطبین</h1>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="openAddModal()">
+            <i class="fas fa-plus"></i> افزودن
+          </button>
+          <button class="btn btn-outline" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="btn btn-outline" onclick="showStats()">
+            <i class="fas fa-chart-pie"></i> آمار
+          </button>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="جستجوی مخاطب..."
+            oninput="searchContacts()"
+          />
+        </div>
+        <button class="btn btn-pink" onclick="sortContacts('name')">
+          <i class="fas fa-sort-alpha-down"></i> مرتب‌سازی
+        </button>
+        <button class="btn btn-green" onclick="sortContacts('date')">
+          <i class="fas fa-calendar"></i> جدیدترین
+        </button>
+      </div>
+
+      <div id="statsContainer" style="display: none"></div>
+
+      <div id="contactsContainer">
+        <div class="contacts-grid" id="contactsGrid"></div>
+      </div>
+    </div>
+
+    <div class="modal" id="contactModal">
+      <div class="modal-content">
+        <h2 id="modalTitle">افزودن مخاطب جدید</h2>
+        <input type="text" id="firstName" placeholder="نام" />
+        <input type="text" id="lastName" placeholder="نام خانوادگی" />
+        <input type="tel" id="phoneNumber" placeholder="شماره تلفن" />
+        <input type="email" id="email" placeholder="ایمیل" />
+        <input type="text" id="street" placeholder="خیابان" />
+        <input type="text" id="city" placeholder="شهر" />
+        <input type="text" id="zipCode" placeholder="کد پستی" />
+        <input type="text" id="group" placeholder="گروه" />
+        <div class="modal-actions">
+          <button class="btn btn-primary" onclick="saveModalContact()">
+            ذخیره
+          </button>
+          <button class="btn btn-danger" onclick="closeModal()">انصراف</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let contacts = [];
+      let editingIndex = -1;
+
+      class Contact {
+        constructor(firstName, lastName, phoneNumber, address, email, group) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+          this.phoneNumber = phoneNumber;
+          this.address = address;
+          this.email = email;
+          this.group = group;
+          this.createdAt = new Date();
+        }
+      }
+
+      function loadContacts() {
+        const data = localStorage.getItem("contacts");
+        if (data) {
+          contacts = JSON.parse(data);
+          contacts.forEach((c) => (c.createdAt = new Date(c.createdAt)));
+        }
+        renderContacts();
+        updateStats();
+      }
+
+      function saveContacts() {
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+        renderContacts();
+        updateStats();
+      }
+
+      function renderContacts(filteredContacts = null) {
+        const grid = document.getElementById("contactsGrid");
+        const displayContacts = filteredContacts || contacts;
+
+        if (displayContacts.length === 0) {
+          grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #6b6b8a;">
+                        <i class="fas fa-address-book" style="font-size: 48px; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p style="font-size: 18px;">هنوز هیچ مخاطبی ندارید!</p>
+                        <p style="font-size: 14px; margin-top: 10px;">روی دکمه <strong>افزودن</strong> کلیک کنید تا اولین مخاطب خود را اضافه کنید.</p>
+                    </div>
+                `;
+          return;
+        }
+
+        grid.innerHTML = displayContacts
+          .map((contact, index) => {
+            const realIndex = contacts.indexOf(contact);
+            const initials =
+              `${contact.firstName[0]}${contact.lastName[0]}`.toUpperCase();
+            const groupColors = {
+              خانواده: "#d5f5e0",
+              کار: "#e8d5f5",
+              دوستان: "#f5d5e0",
+              سایر: "#d5e8f5",
+            };
+            const groupColor = groupColors[contact.group] || "#d5e8f5";
+
+            return `
+                    <div class="contact-card">
+                        <div class="contact-avatar">${initials}</div>
+                        <div class="contact-name">${contact.firstName} ${contact.lastName}</div>
+                        <div class="contact-detail">
+                            <i class="fas fa-phone"></i> ${contact.phoneNumber}
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fas fa-envelope"></i> ${contact.email}
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fas fa-map-marker-alt"></i> ${contact.address.city}
+                        </div>
+                        <span class="contact-group" style="background: ${groupColor}">
+                            ${contact.group || "بدون گروه"}
+                        </span>
+                        <div class="contact-actions">
+                            <button class="btn-edit" onclick="openEditModal(${realIndex})">
+                                <i class="fas fa-edit"></i> ویرایش
+                            </button>
+                            <button class="btn-delete" onclick="deleteContact(${realIndex})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      function searchContacts() {
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase()
+          .trim();
+        if (!query) {
+          renderContacts();
+          return;
+        }
+
+        const filtered = contacts.filter(
+          (c) =>
+            c.firstName.toLowerCase().includes(query) ||
+            c.lastName.toLowerCase().includes(query) ||
+            c.phoneNumber.includes(query) ||
+            c.email.toLowerCase().includes(query) ||
+            c.group.toLowerCase().includes(query),
+        );
+        renderContacts(filtered);
+      }
+
+      function sortContacts(by) {
+        switch (by) {
+          case "name":
+            contacts.sort((a, b) => a.firstName.localeCompare(b.firstName));
+            break;
+          case "date":
+            contacts.sort((a, b) => b.createdAt - a.createdAt);
+            break;
+        }
+        saveContacts();
+      }
+
+      function updateStats() {
+        const container = document.getElementById("statsContainer");
+        const total = contacts.length;
+
+        const groups = {};
+        contacts.forEach((c) => {
+          groups[c.group] = (groups[c.group] || 0) + 1;
+        });
+
+        let statsHTML = `
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">${total}</div>
+                        <div class="stat-label">کل مخاطبین</div>
+                    </div>
+            `;
+
+        Object.entries(groups).forEach(([group, count]) => {
+          statsHTML += `
+                    <div class="stat-item">
+                        <div class="stat-number">${count}</div>
+                        <div class="stat-label">${group}</div>
+                    </div>
+                `;
+        });
+
+        statsHTML += `</div>`;
+        container.innerHTML = statsHTML;
+      }
+
+      function showStats() {
+        const container = document.getElementById("statsContainer");
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
+        updateStats();
+      }
+
+      function openAddModal() {
+        editingIndex = -1;
+        document.getElementById("modalTitle").textContent =
+          "➕ افزودن مخاطب جدید";
+        document
+          .querySelectorAll("#contactModal input")
+          .forEach((input) => (input.value = ""));
+        document.getElementById("contactModal").classList.add("active");
+      }
+
+      function openEditModal(index) {
+        editingIndex = index;
+        const contact = contacts[index];
+        document.getElementById("modalTitle").textContent = "✏️ ویرایش مخاطب";
+        document.getElementById("firstName").value = contact.firstName;
+        document.getElementById("lastName").value = contact.lastName;
+        document.getElementById("phoneNumber").value = contact.phoneNumber;
+        document.getElementById("email").value = contact.email;
+        document.getElementById("street").value = contact.address.street;
+        document.getElementById("city").value = contact.address.city;
+        document.getElementById("zipCode").value = contact.address.zipCode;
+        document.getElementById("group").value = contact.group;
+        document.getElementById("contactModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("contactModal").classList.remove("active");
+      }
+
+      function saveModalContact() {
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const phoneNumber = document.getElementById("phoneNumber").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const street = document.getElementById("street").value.trim();
+        const city = document.getElementById("city").value.trim();
+        const zipCode = document.getElementById("zipCode").value.trim();
+        const group = document.getElementById("group").value.trim();
+
+        if (!firstName || !lastName || !phoneNumber || !email) {
+          alert(
+            "لطفاً حداقل نام، نام‌خانوادگی، شماره تلفن و ایمیل را وارد کنید!",
+          );
+          return;
+        }
+
+        const address = { street, city, zipCode };
+
+        if (editingIndex === -1) {
+          const contact = new Contact(
+            firstName,
+            lastName,
+            phoneNumber,
+            address,
+            email,
+            group || "سایر",
+          );
+          contacts.push(contact);
+        } else {
+          contacts[editingIndex].firstName = firstName;
+          contacts[editingIndex].lastName = lastName;
+          contacts[editingIndex].phoneNumber = phoneNumber;
+          contacts[editingIndex].address = address;
+          contacts[editingIndex].email = email;
+          contacts[editingIndex].group = group || "سایر";
+        }
+
+        saveContacts();
+        closeModal();
+      }
+
+      function deleteContact(index) {
+        if (
+          confirm(
+            `آیا مطمئن هستید که می‌خواهید "${contacts[index].firstName} ${contacts[index].lastName}" را حذف کنید؟`,
+          )
+        ) {
+          contacts.splice(index, 1);
+          saveContacts();
+        }
+      }
+
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        const icon = document.querySelector(".header-actions .btn-outline i");
+        icon.classList.toggle("fa-moon");
+        icon.classList.toggle("fa-sun");
+      }
+
+      loadContacts();
+
+      document
+        .getElementById("contactModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+    </script>
+  </body>
+</html>
